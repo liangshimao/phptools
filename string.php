@@ -17,6 +17,20 @@ function create_uuid($prefix = ""){    //可以指定分隔符
 }
 
 /**
+ * @param int $length
+ * @return string
+ * 生成随机字符串
+ */
+function createNonceStr($length = 16) {
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    $str = "";
+    for ($i = 0; $i < $length; $i++) {
+        $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+    }
+    return $str;
+}
+
+/**
  * 字符串加密、解密函数
  * @param	string	$txt		字符串
  * @param	string	$operation	ENCODE为加密，DECODE为解密，可选参数，默认为ENCODE，
@@ -101,37 +115,5 @@ function cutUtf8($string, $length, $etc = '...') {
     return $result;
 }
 
-/**
- * 时间转为为几天前,几分钟前等数据
- * @param $the_time
- * @return string
- */
-function time_tran($the_time) {
-    $now_time = date("Y-m-d H:i:s", time());
-    //echo $now_time;
-    $now_time = strtotime($now_time);
-    $show_time = strtotime($the_time);
-    $dur = $now_time - $show_time;
-    if ($dur < 0) {
-        return date('Y-m-d H:i', strtotime($the_time));
-    } else {
-        if ($dur < 60) {
-            return $dur . '秒前';
-        } else {
-            if ($dur < 3600) {
-                return floor($dur / 60) . '分钟前';
-            } else {
-                if ($dur < 86400) {
-                    return floor($dur / 3600) . '小时前';
-                } else {
-                    if ($dur < 259200) {//3天内
-                        return floor($dur / 86400) . '天前';
-                    } else {
-                        return date('Y-m-d', strtotime($the_time));
-                    }
-                }
-            }
-        }
-    }
-}
+
 
